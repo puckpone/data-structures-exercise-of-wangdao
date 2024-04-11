@@ -405,3 +405,55 @@ bool brackets_cmp(string &str){
 
 
 
+
+
+
+
+# KMP算法
+
+在“abababca”中寻找是否存在子串“ababca”
+
+- 模式串：ababca
+- 匹配串：abababca
+
+next数组记录**模式串**中对应位置的字串的最长相等前后缀的长度，也就是字符串匹配时应该回退的下标
+
+next[i]表示s[0...i]的**最长相等前后缀**长度
+
+- **前缀**是指不包含最后一个字符的所有以**第一个字符开头**的连续子串；
+- **后缀**是指不包含第一个字符的所有**以最后一个字符结尾**的连续子串
+
+**时间复杂度**
+
+> O(n+m)
+
+[力扣28](https://leetcode.cn/problems/find-the-index-of-the-first-occurrence-in-a-string/submissions/505367894/)
+
+```C++
+class Solution {
+public:
+    void getNext(string s,int &_next[]){ // 求next数组 next[i]表示s[0...i]的最长公共前后缀长度
+        _next[0] = 0; // Initialize _next[0]
+        int n = s.size();
+        int j = 0;
+        for(int i=1 ; i<n ; i++){  
+            while(j > 0 && s[i] != s[j]) j = _next[j-1]; 
+            // 不匹配，这里是回退到_next[j-1]而不是_next[j]
+            if(s[i] == s[j]) j++; // 匹配，长度加一
+            _next[i] = j;   
+        }
+    }
+    int strStr(string haystack, string needle) {
+        int n = haystack.size(), m = needle.size();
+        if(m == 0) return 0;
+        getNext(needle);
+        int j = 0;  //j是needle的下标，i是haystack的下标
+        for(int i=0 ; i<n ; i++){
+            while(j > 0 && haystack[i] != needle[j]) j = _next[j-1];
+            if(haystack[i] == needle[j]) j++;
+            if(j == m) return i - m + 1; // 匹配成功 返回下标
+        }
+        return -1;
+    }
+};
+```
