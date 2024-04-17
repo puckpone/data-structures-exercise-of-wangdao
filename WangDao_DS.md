@@ -432,13 +432,14 @@ next[i]表示s[0...i]的**最长相等前后缀**长度
 ```C++
 class Solution {
 public:
-    void getNext(string s,int &_next[]){ // 求next数组 next[i]表示s[0...i]的最长公共前后缀长度
-        _next[0] = 0; // Initialize _next[0]
+    int _next[10005];
+    void getNext(string s,int *_next){ // 求next数组 next[i]表示s[0...i-1]的最长公共前后缀长度
+        _next[0] = -1; // Initialize _next[0]
+        _next[1] = 0;
         int n = s.size();
         int j = 0;
         for(int i=1 ; i<n ; i++){  
-            while(j > 0 && s[i] != s[j]) j = _next[j-1]; 
-            // 不匹配，这里是回退到_next[j-1]而不是_next[j]
+            while(j > 1 && s[i] != s[j]) j = _next[j]; //不匹配，回退
             if(s[i] == s[j]) j++; // 匹配，长度加一
             _next[i] = j;   
         }
@@ -446,10 +447,10 @@ public:
     int strStr(string haystack, string needle) {
         int n = haystack.size(), m = needle.size();
         if(m == 0) return 0;
-        getNext(needle);
+        getNext(needle,_next);
         int j = 0;  //j是needle的下标，i是haystack的下标
         for(int i=0 ; i<n ; i++){
-            while(j > 0 && haystack[i] != needle[j]) j = _next[j-1];
+            while(j > 1 && haystack[i] != needle[j]) j = _next[j];
             if(haystack[i] == needle[j]) j++;
             if(j == m) return i - m + 1; // 匹配成功 返回下标
         }
