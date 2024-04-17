@@ -465,6 +465,8 @@ public:
 
 改进next -> nextval
 
+手算参考 [数据结构——全网最简单求nextval数组，三分钟搞定](https://www.bilibili.com/video/BV1H24y1p7u6?vd_source=64b252ff29327deb03582db5a8c18de0)
+
 ```
 void getNextval(string s,int *_nextval){ // 求next数组 next[i]表示s[0...i-1]的最长公共前后缀长度
 	int i=1,j=0;
