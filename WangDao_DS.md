@@ -434,27 +434,52 @@ class Solution {
 public:
     int _next[10005];
     void getNext(string s,int *_next){ // 求next数组 next[i]表示s[0...i-1]的最长公共前后缀长度
-        _next[0] = -1; // Initialize _next[0]
-        _next[1] = 0;
+        int i=1,j=0;
+        _next[0]=-1;
         int n = s.size();
-        int j = 0;
-        for(int i=1 ; i<n ; i++){  
-            while(j > 1 && s[i] != s[j]) j = _next[j]; //不匹配，回退
-            if(s[i] == s[j]) j++; // 匹配，长度加一
-            _next[i] = j;   
+        while(i<n){
+            if(j==-1 || s[i]==s[j]){ //匹配，往后移动
+                i++;j++;
+                _next[i] = j;
+            }
+            else j=_next[j]; //不匹配，回退
         }
+        
     }
     int strStr(string haystack, string needle) {
         int n = haystack.size(), m = needle.size();
         if(m == 0) return 0;
         getNext(needle,_next);
-        int j = 0;  //j是needle的下标，i是haystack的下标
-        for(int i=0 ; i<n ; i++){
-            while(j > 1 && haystack[i] != needle[j]) j = _next[j];
-            if(haystack[i] == needle[j]) j++;
-            if(j == m) return i - m + 1; // 匹配成功 返回下标
+        int i=0,j=0;  //j是needle的下标，i是haystack的下标
+        while(i<n && j<m){
+            if(j==-1 || haystack[i]==needle[j]){
+                i++;j++;
+            }
+            else j=_next[j];
         }
+        if(j==m) return  i-m;
         return -1;
     }
 };
 ```
+
+改进next -> nextval
+
+```
+void getNextval(string s,int *_nextval){ // 求next数组 next[i]表示s[0...i-1]的最长公共前后缀长度
+	int i=1,j=0;
+	_nextval[0]=-1;
+	int n = s.size();
+	while(i<n){
+		if(j==-1 || s[i]==s[j]){ //匹配，往后移动
+			i++;j++;
+			if(s[i] != s[j]) 
+				_nextval[i] = j;
+			else
+				_nextval[i] = nextval[j];
+		}
+		else j=_nextval[j]; //不匹配，回退
+	}
+}
+```
+
