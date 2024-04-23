@@ -1,4 +1,5 @@
-# 
+> 作为408考试的算法题，不要求考虑特殊的边界条件，只要算法思想正确，代码逻辑正确，即可得满分。因此，在复习过程中，无须花过多的时间抠代码的各种边界条件。
+>
 
 # 线性表
 
@@ -485,3 +486,66 @@ void getNextval(string s,int *_nextval){ // 求next数组 next[i]表示s[0...i-1
 }
 ```
 
+
+
+
+
+# 树与二叉树
+
+
+
+**【2014统考真题】**二叉树的带权路径长度（WPL）是二叉树中所有叶结点的带权路径长度之和。给定一棵二叉树T，采用二叉链表存储，结点结构为 |left|weight|right| 其中叶结点的weight域保存该结点的非负权值。设root为指向T的根结点的指针，请设计求T的WPL的算法，
+
+要求：
+
+​	1）给出算法的基本设计思想。
+
+​	2）使用C或C++语言，给出二叉树结点的数据类型定义。
+
+​	3）根据设计思想，采用C或C++语言描述算法，关键之处给出注释。
+
+
+
+1. 二叉树的WPL值=树中全部叶结点的带权路径长度之和=
+
+   **根结点左子树中全部叶结点的带权路径长度之和** + **根结点右子树中全部叶结点的带权路径长度之和**
+
+   叶结点的带权路径长度 = 该结点的**weight**域的值 x 该结点的**深度**
+
+   递归求即可
+
+2. 
+
+   ```c++
+   typedef struct BiTNode{
+       int data;
+       struct node* lchild;
+       struct node* rchild;
+   }BiTNode, *BiTree;
+   ```
+
+3. ```c++
+   int WPL(BiTNode* T, int height){ //当前遍历的结点以及其深度
+       if(T==NULL) return 0;
+       if(T->lchild == NULL && T->rchild == NULL){  //叶子结点
+           return T->data * height;
+       }
+       return WPL(T->lchild,height+1) + WPL(T->rchild,height+1);
+   }
+   WPL(T,1); //函数调用
+   ```
+
+
+
+
+
+![img](./imgs/bitree1.png)
+
+1. 
+
+2. ```c++
+   
+   
+   ```
+
+3. 
