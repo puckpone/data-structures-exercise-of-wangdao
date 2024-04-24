@@ -541,11 +541,32 @@ void getNextval(string s,int *_nextval){ // 求next数组 next[i]表示s[0...i-1
 
 ![img](./imgs/bitree1.png)
 
-1. 
+1. 本体的难点在于加括号，处理思想为，若遍历到的结点有孩子，就先加左括号，再遍历左孩子->根->右孩子，最后再加右括号。按此逻辑对中序遍历加以改造即可。注意，根结点对应的最”外面“的表达式不需要括号
 
 2. ```c++
-   
+   void InOrder(node* p, int depth){
+       if(p==NULL) return;
+       else if(!node->left && !node->right){ //叶子结点，不需要加括号
+           cout<<p->data;
+       }
+       else{ //非叶子结点
+           if(depth>1)  cout<<'(';
+           InOrder(p->left,depth+1);
+           cout<<p->data;
+           InOrder(p->right,depth+1);
+   		if(depth>1)  cout<<')';
+       }
+   }
    
    ```
 
-3. 
+
+
+
+
+![bitree2](./imgs/bitree2.png)
+
+**TODO://二叉搜索树的概念在第七章的查找中**
+
+
+
