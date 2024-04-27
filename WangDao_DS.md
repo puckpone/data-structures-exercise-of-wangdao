@@ -621,3 +621,83 @@ void getNextval(string s,int *_nextval){ // 求next数组 next[i]表示s[0...i-1
 
 3. 由前缀编码的特性可知，在哈夫曼树中每个字符都在叶子结点，所以在构建树的过程中若试图在一个字符所在的结点添加孩子，那么说明该串的前缀中存在其他的串。
 
+
+
+
+
+# 图 
+
+**【2021统考真题】**已知无向连通图G由顶点集V和边集E组成，|E|>0，当G中度为奇数的顶点个数为不大于2的偶数时，G存在包含所有边且长度为|E|的路径（称为EL路径）。设图G采用邻接矩阵存储，类型定义如下：
+
+```c++
+typedef struct {
+    int numVertices，numEdges;    // 图中实际的顶点数和边数
+    char VerticesList[MAXV];   // 顶点表
+    int Edge[MAXV][MAXV];      // 邻接矩阵
+} MGraph;
+```
+
+请设计算法int IsExistEL（MGraph G)，判断G是否存在EL路径，若存在，则返回1，否则返回0。要求：
+
+1）给出算法的基本设计思想。
+
+2）根据设计思想，采用C或C++语言描述算法，关键之处给出注释
+
+3）说明你所设计算法的时间复杂度和空间复杂度。
+
+
+
+1. 不大于2的偶数即2，所以只需要遍历邻接矩阵，判断图G中度为奇数的顶点的个数是否等于2即可。
+
+2. ```c++
+   int IsExistEL(MGraph G){
+       int count=0;//度为奇数的顶点的个数
+       for(int k=0 ; k<MAXV ; k++){  //枚举顶点
+           int TD=0;  //顶点k的度
+           for(int i=k,j=0; j<MAXV ; j++){ //计算顶点k的出度
+               if(G.Edge[i][j]!=0 && G.Edge[i][j]!=∞) TD+=1;
+           }
+           for(int j=k,i=0; i<MAXV ; i++){ //计算顶点k的入度
+               if(G.Edge[i][j]!=0 && G.Edge[i][j]!=∞) TD+=1;
+           }
+           if(TD%2 != 0) count++;
+       }
+       if(count==2 || count==0) return 1;
+       else return 0;
+   }
+   ```
+
+3. 由于遍历了整个邻接矩阵，故时间复杂度为O(n), 空间复杂度为O(1)
+
+**【2023统考真题】**已知有向图G采用邻接矩阵存储，类型定义如下：
+
+```c++
+typedef struct {
+    int numVertices，numEdges;    // 图中实际的顶点数和边数
+    char VerticesList[MAXV];   // 顶点表
+    int Edge[MAXV][MAXV];      // 邻接矩阵
+} MGraph;
+```
+
+![](./imgs/graph1.png)
+
+1. 对每个顶点，在邻接矩阵中找到对应行、列，计算出度与入度，若出度大于入度，则为K顶点，输出，并设置一个变量count记录K顶点的个数
+
+2. ```c++
+   int printVertices(MGraph G){
+       int count=0; //K顶点的个数
+       for(int k=0 ; k<MAXV ; k++){  //枚举顶点
+           int ID=0,OD=0;  //编号为k的顶点的入度与出度
+           for(int i=k,j=0; j<MAXV ; j++){ //计算出度
+               if(G.Edge[i][j]!=0 && G.Edge[i][j]!=∞) OD+=1;
+           }
+           for(int j=k,i=0; i<MAXV ; i++){ //计算入度
+               if(G.Edge[i][j]!=0 && G.Edge[i][j]!=∞) ID+=1;
+           }
+           if(OD>ID) cout<<G.VerticesList[k]<<endl;
+       }
+       return count;
+   }
+   ```
+
+   
